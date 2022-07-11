@@ -4,7 +4,7 @@
 
 void output(double a[M][M], double b[M]){
     for(int i=0; i<M; i++){
-        for(int j=0;j<M;j++){
+        for(int j=0; j<M; j++){
             printf("%10.5lf ",a[i][j]);
         }
         printf("%10.5lf\n", b[i]);
@@ -12,8 +12,13 @@ void output(double a[M][M], double b[M]){
     printf("\n");
 }
 
+void swap(double *x, double *y){
+    double tmp = *x;
+    *x = *y;
+    *y = tmp;
+}
+
 void pivot(int i, double a[M][M], double b[M]){
-    double tmp[M] = {0,0,0,0};
     double max = 0.0;
     int j = i;
     for(int k=i; k<M; k++){
@@ -24,13 +29,9 @@ void pivot(int i, double a[M][M], double b[M]){
     }
     if(i != j){
         for(int k=0; k<M; k++){
-            tmp[k] = a[i][k];
-            a[i][k] = a[j][k];
-            a[j][k] = tmp[k];
+            swap(&a[i][k],&a[j][k]);
         }
-        tmp[0] = b[i];
-        b[i] = b[j];
-        b[j] = tmp[0];
+        swap(&b[i],&b[j]);
     }
     return;
 }
@@ -55,7 +56,7 @@ void zensin(int i, double a[M][M], double b[M]){
 
 void koutai(int i, double a[M][M], double b[M]){
     for(int k=i+1; k<M; k++){
-        b[i] = b[i] - a[i][k] * b[k];
+        b[i] -= a[i][k] * b[k];
         a[i][k] = 0;
     }
     return;
@@ -70,7 +71,7 @@ void main(){
     //データの読み込み
     fp = fopen("kadai19(1).txt","r");
     for(int i=0; i<M; i++){
-        for(int j=0;j<M;j++){
+        for(int j=0; j<M; j++){
             fscanf(fp,"%lf",&a[i][j]);
         }
         fscanf(fp,"%lf",&b[i]);
